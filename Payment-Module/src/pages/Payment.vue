@@ -176,9 +176,6 @@ export default {
     }
   },
   mounted() {
-    //window.Mercadopago.setPublishableKey('TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e')
-    // document.getElementById('cardNumber').addEventListener('change', this.guessPaymentMethod())
-    // this.getDocumentTypes()
     this.getOrderInformation()
     $(document).ready(function() {
       var publicKey = 'TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e'
@@ -187,56 +184,11 @@ export default {
       var transactionAmount = $('#transactionAmount')
       var docType = $('#docType')
       var paymentForm = $('#paymentForm')
-      console.log('holi')
-      //Setear llave pública
       Mercadopago.setPublishableKey(publicKey)  
-      //Combo tipos de documento
       Mercadopago.getIdentificationTypes()
       docType.select2({})
       var id_cliente = ''
-      /*cliente={
-  	'email': 'bruno@gmail.com',
-  	'first_name': 'Bruce',
-  	'last_name': 'Wayne',
-  	'phone': {
-  		'area_code': '023',
-  		'number': '12345678'
-  	},
-  	'identification': {
-  		'type': 'DNI',
-  		'number': '12345678'
-  	},
-  	'address': {
-  		'zip_code': 'SG1 2AX',
-  		'street_name': 'Old Knebworth Ln'
-  	},
-  	'description': 'Lorem Ipsum'
-  }
-  $.ajax({
-  	url: 'https://api.mercadopago.com/v1/customers',
-  	method: 'POST',
-  	data:JSON.stringify(cliente),
-  	headers:{'Authorization':  'Bearer '+accessToken},
-  	success: function(result) {
-  		console.log(result)
-  		id_cliente=result.id
-  	}
-  })*/
       var id_cliente = '693373613-YXonnK07bOfOAB'
-      //Crear tarjeta
-      /*
-  $.ajax({
-  	url: 'https://api.mercadopago.com/v1/customers/'+id_cliente+'/cards',
-  	method: 'POST',
-  	data:JSON.stringify({
-  		'token': 'b3a7dbec3eb0d71798c4f19fec445795'
-  	  }),
-  	headers:{'Authorization':  'Bearer '+accessToken},
-  	success: function(result) {
-  		console.log(result)
-  	}
-  })
-  */
       function getInstallments(paymentMethodId, transactionAmount, issuerId) {
         window.Mercadopago.getInstallments(
           {
@@ -324,24 +276,16 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
-          /*data={'id_orden':$('#id_orden').val(),
-      	  'token':$('input[name$='token']').val(),
-      	  'transaction_amount':$('#transaction_amount').val(),
-      	  'installments':$('#installments').val(),
-      	  'payment_method_id':$('#payment_method_id').val(),
-      	  'payer_email':$('#email').val()}*/
-          //var fd = new FormData(paymentForm)
           var fd = new FormData()
-          fd.append('idOrden', $('#id_orden').val())
-          fd.append('token', $("input[name$='token']").val())
-          fd.append('transactionAmount', $('#transactionAmount').val())
+          fd.append('idOrden', this.$route.params.idOrden)
+          fd.append('token', response.id)
+          fd.append('transactionAmount', this.userInformation.monto_total)
           fd.append('installments', $('#installments').val())
-          fd.append('paymentMethodId', $('#paymentMethodId').val())
-          fd.append('docType', $('#docType').val())
-          fd.append('docNumber', $('#docNumber').val())
-          fd.append('email', $('#email').val())
+          fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
+          fd.append('docType', 'DNI')
+          fd.append('docNumber', this.userInformation.usuario_documento)
+          fd.append('email', userInformation.usuario_correo)
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
-
           xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
           xhr.onreadystatechange = function(response) {}
           xhr.send(fd) **/
@@ -352,11 +296,11 @@ export default {
             method: 'POST',
             data: fd,//JSON.stringify(data),
             success: function(result) {
-				console.log(result)
-            }
-    	})*/
+				    console.log(result)
+             }
+    	    })*/
         } else {
-          alert('Verify filled data!\n' + JSON.stringify(response, null, 4))
+          alert('Verify filled data!\n' + JSON.stringify('response', null, 4))
         }
       }
     })
@@ -366,7 +310,6 @@ export default {
       this.apiCall()
     },
     guessPaymentMethod(event) {
-      console.log('ejecutando')
       if (this.cardNumber.length >= 6) {
         var bin = this.cardNumber.substring(0, 6)
         window.Mercadopago.getPaymentMethod(
