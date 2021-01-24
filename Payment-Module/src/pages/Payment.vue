@@ -13,7 +13,7 @@
           <q-card-section>
             <div class="row q-gutter-md">
               <div class="col q-gutter-md">
-                <form action="/process_payment" method="post" id="paymentForm">
+                <form action="http://localhost:8060/paytrack/api/pago" method="post" id="paymentForm">
                   <p class="text-h5 text-cyan-8 text-light">Detalles del comprador</p>
                   <q-separator></q-separator>
                   <div class="q-pt-md">
@@ -114,7 +114,7 @@
                       <select type="text" id="installments" name="installments"></select>
                     </div>
                     <div>
-                      <input type="hidden" name="transactionAmount" id="transactionAmount" value="100" />
+                      <input type="hidden"  v-model="userInformation.monto_total" name="transactionAmount" id="transactionAmount"  />
                       <input type="hidden" name="paymentMethodId" id="paymentMethodId" />
                       <input type="hidden" name="description" id="description" />
                       <br />
@@ -178,17 +178,17 @@ export default {
   mounted() {
     this.getOrderInformation()
     var idOrden = document.createElement('input')
-    idOrden.setAttribute('name', 'idOrdeInput')
+    idOrden.setAttribute('id', 'idOrdenInput')
     idOrden.setAttribute('type', 'hidden')
     idOrden.setAttribute('value', this.$route.params.idOrden)
     paymentForm.append(idOrden)
     var amount = document.createElement('input')
-    amount.setAttribute('name', 'amount')
+    amount.setAttribute('id', 'amount')
     amount.setAttribute('type', 'hidden')
     amount.setAttribute('value', this.userInformation.monto_total)
     paymentForm.append(amount)
-    doSubmit = true
-    paymentForm.submit()
+    //var doSubmit = true
+    //paymentForm.submit()
     $(document).ready(function() {
       var publicKey = 'TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e'
       var cardnumber = $('#cardNumber')
@@ -288,29 +288,35 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
+          console.log("Holiii")
           var fd = new FormData()
-          fd.append('idOrden', document.getElementByName('email').value)
+          fd.append('idOrden', document.getElementById('idOrdenInput').value)
           fd.append('token', response.id)
-          fd.append('transactionAmount', document.getElementByName('amount').value)
+          fd.append('transactionAmount', document.getElementById('transactionAmount').value)
           fd.append('installments', $('#installments').val())
           fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
           fd.append('docType', 'DNI')
           fd.append('docNumber', document.getElementById('docNumber').value)
-          fd.append('email', document.getElementById('').value)
-          console.log(fd)
+          fd.append('email', document.getElementById('email').value)
+          console.log(Object.fromEntries(fd))
+          var xhr = new XMLHttpRequest();
+          xhr.open( 'POST', 'http://localhost:8060/paytrack/api/pago', true );
+          xhr.onreadystatechange = function ( response ) {};
+          xhr.send( fd );
+          
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
           xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
           xhr.onreadystatechange = function(response) {}
           xhr.send(fd) **/
           //e.preventDefault()
-          $.ajax({
+          /** $.ajax({
             url: 'http://localhost:8060/paytrack/api/pago',
             method: 'POST',
             data: fd,//JSON.stringify(data),
             success: function(result) {
 				      console.log(result)
             }
-    	    })
+    	    }) **/
         } else {
           alert('Verify filled data!\n' + JSON.stringify('response', null, 4))
         }
@@ -445,15 +451,18 @@ export default {
         })
     },
     createPayment() {
+      console.log("Holiii")
       var fd = new FormData()
-      fd.append('idOrden', this.$route.params.idOrden)
+      fd.append('idOrden', document.getElementById('idOrdenInput').value)
       fd.append('token', response.id)
-      fd.append('transactionAmount', this.userInformation.monto_total)
-      fd.append('installments', $('#installments').val()  )
+      fd.append('transactionAmount', document.getElementById('transactionAmount').value)
+      fd.append('installments', $('#installments').val())
       fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
       fd.append('docType', 'DNI')
-      fd.append('docNumber', this.userInformation.usuario_documento)
-      fd.append('email', userInformation.usuario_correo)
+      fd.append('docNumber', document.getElementById('docNumber').value)
+      fd.append('email', document.getElementById('email').value)
+      console.log( document.getElementById('transactionAmount').value)
+
       this.$axios
         .post('http://localhost:8060/paytrack/api/pago', {
           headers: {
