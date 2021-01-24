@@ -177,6 +177,18 @@ export default {
   },
   mounted() {
     this.getOrderInformation()
+    var idOrden = document.createElement('input')
+    idOrden.setAttribute('name', 'idOrdeInput')
+    idOrden.setAttribute('type', 'hidden')
+    idOrden.setAttribute('value', this.$route.params.idOrden)
+    paymentForm.append(idOrden)
+    var amount = document.createElement('input')
+    amount.setAttribute('name', 'amount')
+    amount.setAttribute('type', 'hidden')
+    amount.setAttribute('value', this.userInformation.monto_total)
+    paymentForm.append(amount)
+    doSubmit = true
+    paymentForm.submit()
     $(document).ready(function() {
       var publicKey = 'TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e'
       var cardnumber = $('#cardNumber')
@@ -276,21 +288,29 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
-
+          var fd = new FormData()
+          fd.append('idOrden', document.getElementByName('email').value)
+          fd.append('token', response.id)
+          fd.append('transactionAmount', document.getElementByName('amount').value)
+          fd.append('installments', $('#installments').val())
+          fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
+          fd.append('docType', 'DNI')
+          fd.append('docNumber', document.getElementById('docNumber').value)
+          fd.append('email', document.getElementById('').value)
+          console.log(fd)
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
           xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
           xhr.onreadystatechange = function(response) {}
           xhr.send(fd) **/
-          console.log(fd)
           //e.preventDefault()
-          /*$.ajax({
+          $.ajax({
             url: 'http://localhost:8060/paytrack/api/pago',
             method: 'POST',
             data: fd,//JSON.stringify(data),
             success: function(result) {
-				    console.log(result)
-             }
-    	    })*/
+				      console.log(result)
+            }
+    	    })
         } else {
           alert('Verify filled data!\n' + JSON.stringify('response', null, 4))
         }
