@@ -117,6 +117,8 @@
                       <input type="hidden"  v-model="userInformation.monto_total" name="transactionAmount" id="transactionAmount"  />
                       <input type="hidden" name="paymentMethodId" id="paymentMethodId" />
                       <input type="hidden" name="description" id="description" />
+                      <input type="hidden" v-model="userInformation.descripcion_orden"  id="descripcionOrden" />
+                      <input type="hidden" v-model="userInformation.idUsuario"  id="idUsuario" />
                       <br />
                       <button class="mercadopago-button" type="submit">Pagar</button>
                       <br />
@@ -171,7 +173,9 @@ export default {
       userInformation: {
         usuario_correo: '',
         usuario_documento: '',
-        monto_total: 0.00
+        monto_total: 0.00,
+        descripcion_orden: '',
+        idUsuario: 0
       }
     }
   },
@@ -182,11 +186,7 @@ export default {
     idOrden.setAttribute('type', 'hidden')
     idOrden.setAttribute('value', this.$route.params.idOrden)
     paymentForm.append(idOrden)
-    var amount = document.createElement('input')
-    amount.setAttribute('id', 'amount')
-    amount.setAttribute('type', 'hidden')
-    amount.setAttribute('value', this.userInformation.monto_total)
-    paymentForm.append(amount)
+
     //var doSubmit = true
     //paymentForm.submit()
     $(document).ready(function() {
@@ -280,6 +280,7 @@ export default {
         }
       })
       function setCardTokenAndPay(status, response) {
+        console.log(response)
         if (status == 200 || status == 201) {
           let card = document.createElement('input')
           card.setAttribute('name', 'token')
@@ -288,9 +289,10 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
-          console.log("Holiii")
           var fd = new FormData()
           fd.append('idOrden', document.getElementById('idOrdenInput').value)
+          fd.append('descripcionOrden', document.getElementById('descripcionOrden').value)
+          fd.append('idUsuario', document.getElementById('idUsuario').value)
           fd.append('token', response.id)
           fd.append('transactionAmount', document.getElementById('transactionAmount').value)
           fd.append('installments', $('#installments').val())
@@ -303,23 +305,11 @@ export default {
           xhr.open( 'POST', 'http://localhost:8060/paytrack/api/pago', true );
           xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
           xhr.onreadystatechange = function ( response ) {
-            console.log(response)
+            alert(response)
+            window.location.href = ""
           };
           xhr.send( fd );
           
-          /** var xhr = require("xmlhttprequest").XMLHttpRequest
-          xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
-          xhr.onreadystatechange = function(response) {}
-          xhr.send(fd) **/
-          //e.preventDefault()
-          /** $.ajax({
-            url: 'http://localhost:8060/paytrack/api/pago',
-            method: 'POST',
-            data: fd,//JSON.stringify(data),
-            success: function(result) {
-				      console.log(result)
-            }
-    	    }) **/
         } else {
           alert('Verify filled data!\n' + JSON.stringify('response', null, 4))
         }
@@ -448,37 +438,9 @@ export default {
           this.userInformation.usuario_correo = response.data.usuario_correo
           this.userInformation.usuario_documento = response.data.usuario_documento
           this.userInformation.monto_total = response.data.monto_total
-        })
-        .catch(response => {
-          console.log(response)
-        })
-    },
-    createPayment() {
-      console.log("Holiii")
-      var fd = new FormData()
-      fd.append('idOrden', document.getElementById('idOrdenInput').value)
-      fd.append('token', response.id)
-      fd.append('transactionAmount', document.getElementById('transactionAmount').value)
-      fd.append('installments', $('#installments').val())
-      fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
-      fd.append('docType', 'DNI')
-      fd.append('docNumber', document.getElementById('docNumber').value)
-      fd.append('email', document.getElementById('email').value)
-      console.log( document.getElementById('transactionAmount').value)
-
-      this.$axios
-        .post('http://localhost:8060/paytrack/api/pago', {
-          headers: {
-            Authorization:
-              'Bearer ' +
-              'TEST-3952754901099363-122420-24b46b6510555960d2ac224d8be5ed14-639371765'
-          }
-        })
-        .then(response => {
-          this.documentTypes = response.data
-          this.documentTypes.forEach(element => {
-            element.label = element.name
-          })
+          this.userInformation.descripcion_orden = response.data.descripcion_orden
+          this.userInformation.idUsuario = response.data.usuario
+          console.log("usuario:"+this.userInformation.idUsuario)
         })
         .catch(response => {
           console.log(response)
