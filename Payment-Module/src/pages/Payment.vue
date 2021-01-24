@@ -180,8 +180,6 @@ export default {
     $(document).ready(function() {
       var publicKey = 'TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e'
       var cardnumber = $('#cardNumber')
-      var idNumber = this.$route.params.idOrden
-      console.log(idNumber)
       var paymentMethodId = $('#paymentMethodId')
       var transactionAmount = $('#transactionAmount')
       var docType = $('#docType')
@@ -264,6 +262,7 @@ export default {
       var doSubmit = false
       paymentForm.submit(function(event) {
         event.preventDefault()
+        console.log('holi boli')
         if (!doSubmit) {
           Mercadopago.createToken(paymentForm, setCardTokenAndPay)
         }
@@ -277,7 +276,7 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
-          this.createPayment()
+
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
           xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
           xhr.onreadystatechange = function(response) {}
@@ -425,7 +424,7 @@ export default {
           console.log(response)
         })
     },
-    createPayment () {
+    createPayment() {
       var fd = new FormData()
       fd.append('idOrden', this.$route.params.idOrden)
       fd.append('token', response.id)
@@ -435,7 +434,6 @@ export default {
       fd.append('docType', 'DNI')
       fd.append('docNumber', this.userInformation.usuario_documento)
       fd.append('email', userInformation.usuario_correo)
-      console.log(fd)
       this.$axios
         .post('http://localhost:8060/paytrack/api/pago', {
           headers: {
