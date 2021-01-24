@@ -180,6 +180,8 @@ export default {
     $(document).ready(function() {
       var publicKey = 'TEST-5c409fd1-3ffc-4545-a0b2-4744a55adb0e'
       var cardnumber = $('#cardNumber')
+      var idNumber = this.$route.params.idOrden
+      console.log(idNumber)
       var paymentMethodId = $('#paymentMethodId')
       var transactionAmount = $('#transactionAmount')
       var docType = $('#docType')
@@ -262,7 +264,6 @@ export default {
       var doSubmit = false
       paymentForm.submit(function(event) {
         event.preventDefault()
-        console.log('holi boli')
         if (!doSubmit) {
           Mercadopago.createToken(paymentForm, setCardTokenAndPay)
         }
