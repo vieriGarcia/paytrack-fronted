@@ -1,0 +1,57 @@
+/*
+color: #0076B8;
+color: #F1A000;
+*/
+.login-form {
+	background: #FFFFFF;
+	padding: 80px 120px;
+}
+.login-form .login-or {
+	position: relative;
+	font-size: 1.5em;
+	color: #aaa;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+.login-form .login-or .span-or {
+  width: 100%;
+  display: block;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.login-form .login-or .span-or:before, 
+.login-form .login-or .span-or:after  {
+  background-color: #DDDDDD;
+  position: absolute;
+  content: "";
+  width: 55%;
+  height: 1px;
+  top: 19px;
+}
+.login-form .login-or .span-or:before {
+  left: -50px;
+}
+.login-form .login-or .span-or:after {
+  right: -50px;
+}
+.custom-caption {
+	color: #FFFFFF;
+	padding: 12px;
+	bottom: 15%;
+	left: 15px;
+ }
+@media only screen and (min-width: 1300px) and (max-width:1500px) {}
+@media only screen and (min-width: 769px) and (max-width:1299px) {}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+	.login-form {padding: 40px 30px;}
+}
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+	.login-form {padding: 40px 30px;}
+}
+@media only screen and (min-width: 150px) and (max-width: 481px) {
+	.login-form {padding: 40px 30px;}
+	.login-slider {display: none;}
+}
