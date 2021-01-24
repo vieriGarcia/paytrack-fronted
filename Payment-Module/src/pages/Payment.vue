@@ -276,15 +276,7 @@ export default {
           paymentForm.append(card)
           doSubmit = true
           paymentForm.submit()
-          var fd = new FormData()
-          fd.append('idOrden', this.$route.params.idOrden)
-          fd.append('token', response.id)
-          fd.append('transactionAmount', this.userInformation.monto_total)
-          fd.append('installments', $('#installments').val())
-          fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
-          fd.append('docType', 'DNI')
-          fd.append('docNumber', this.userInformation.usuario_documento)
-          fd.append('email', userInformation.usuario_correo)
+          this.createPayment()
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
           xhr.open('POST', 'http://localhost:8060/paytrack/api/pago', true)
           xhr.onreadystatechange = function(response) {}
@@ -432,11 +424,17 @@ export default {
           console.log(response)
         })
     },
-    createPayment() {
-      const bodyPayment = {
-        
-        
-      }
+    createPayment () {
+      var fd = new FormData()
+      fd.append('idOrden', this.$route.params.idOrden)
+      fd.append('token', response.id)
+      fd.append('transactionAmount', this.userInformation.monto_total)
+      fd.append('installments', $('#installments').val()  )
+      fd.append('paymentMethodId', document.getElementById('paymentMethodId').value)
+      fd.append('docType', 'DNI')
+      fd.append('docNumber', this.userInformation.usuario_documento)
+      fd.append('email', userInformation.usuario_correo)
+      console.log(fd)
       this.$axios
         .post('http://localhost:8060/paytrack/api/pago', {
           headers: {
