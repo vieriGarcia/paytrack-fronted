@@ -301,7 +301,10 @@ export default {
           console.log(Object.fromEntries(fd))
           var xhr = new XMLHttpRequest();
           xhr.open( 'POST', 'http://localhost:8060/paytrack/api/pago', true );
-          xhr.onreadystatechange = function ( response ) {};
+          xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+          xhr.onreadystatechange = function ( response ) {
+            console.log(response)
+          };
           xhr.send( fd );
           
           /** var xhr = require("xmlhttprequest").XMLHttpRequest
