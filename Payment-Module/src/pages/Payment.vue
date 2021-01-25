@@ -119,6 +119,7 @@
                       <input type="hidden" name="description" id="description" />
                       <input type="hidden" v-model="userInformation.descripcion_orden"  id="descripcionOrden" />
                       <input type="hidden" v-model="userInformation.idUsuario"  id="idUsuario" />
+                      <input type="hidden" v-model="userInformation.proveedor"  id="proveedor" />
                       <br />
                       <button class="mercadopago-button" type="submit">Pagar</button>
                       <br />
@@ -175,6 +176,7 @@ export default {
         usuario_documento: '',
         monto_total: 0.00,
         descripcion_orden: '',
+        proveedor: '',
         idUsuario: 0
       }
     }
@@ -300,6 +302,7 @@ export default {
           fd.append('docType', 'DNI')
           fd.append('docNumber', document.getElementById('docNumber').value)
           fd.append('email', document.getElementById('email').value)
+          fd.append('proveedor', document.getElementById('proveedor').value)
           console.log(Object.fromEntries(fd))
           var xhr = new XMLHttpRequest();
           xhr.open( 'POST', 'http://localhost:8060/paytrack/api/pago', true );
@@ -440,7 +443,8 @@ export default {
           this.userInformation.monto_total = response.data.monto_total
           this.userInformation.descripcion_orden = response.data.descripcion_orden
           this.userInformation.idUsuario = response.data.usuario
-          console.log("usuario:"+this.userInformation.idUsuario)
+          this.userInformation.proveedor = response.data.proveedor
+          console.log("proveedor:"+this.userInformation.proveedor)
         })
         .catch(response => {
           console.log(response)
