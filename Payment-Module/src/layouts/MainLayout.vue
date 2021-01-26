@@ -88,7 +88,7 @@
     </q-drawer>
 
     <q-page-container class="GPL__page-container">
-      <router-view />
+      <router-view :userInfo="userInformation"/>
 
       <q-page-sticky v-if="$q.screen.gt.sm" expand position="left">
         <div class="fit q-pt-xl q-px-sm column">
@@ -162,7 +162,6 @@ export default {
           this.userInformation.usuario_nombre = response.data.nombres
           this.userInformation.usuario_apellidos = response.data.apellidos
           this.userInformation.usuario_id = response.data.user
-          console.log(this.userInformation.usuario_id)
         })
         .catch(response => {
           console.log(response)

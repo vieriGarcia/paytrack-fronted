@@ -3,6 +3,7 @@
     <q-card unlevated>
       <q-card-section>
         <div class="text-bold text-primary">Mis transacciones</div>
+        <q-table :data="tableInformation"></q-table>
       </q-card-section>
     </q-card>
   </q-page>
@@ -10,6 +11,29 @@
 
 <script>
 export default {
-  name: 'PageIndex'
+  props: {
+    userInfo: {
+      type: Object
+    }
+  },
+  data () {
+    return {
+      tableInformation: []
+    }
+  },
+  methods: {
+    getPayment () {
+      this.$axios
+        .get('http://localhost:8060/paytrack/api/pago/usuario/' + this.userInfo.usuario_id)
+        .then(response => {
+          console.log(response)
+          this.tableInformation = response.data
+        })
+        .catch(response => {
+          console.log(response)
+        })
+    },
+  }
 }
+
 </script>
