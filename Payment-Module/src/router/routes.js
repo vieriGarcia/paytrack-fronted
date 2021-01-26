@@ -11,7 +11,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Index.vue'), meta: { requiresAuth: true } }
     ]
   },
   {
@@ -25,7 +25,7 @@ const routes = [
     path: '/stadistic',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Estadistica.vue') }
+      { path: '', component: () => import('pages/Estadistica.vue'), meta: { requiresAuth: true } }
     ]
   },
 

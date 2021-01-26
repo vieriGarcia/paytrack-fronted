@@ -20,19 +20,19 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
           <q-btn round dense flat color="grey-2" icon="apps">
-            <q-tooltip>Other optionss</q-tooltip>
+            <q-tooltip>Other options</q-tooltip>
           </q-btn>
-          <q-btn round dense flat color="grey-2" icon="notifications">
+          <q-btn round flat>
+            <q-avatar size="40px">
+              <img src="https://icon-library.com/images/obi-wan-kenobi-icon/obi-wan-kenobi-icon-22.jpg">
+            </q-avatar>
+            <q-tooltip>Bienvenido {{userInformation.usuario_nombre}}</q-tooltip>
+          </q-btn>
+          <q-btn round @click="logout()" dense flat color="grey-2" icon="fas fa-sign-out-alt">
             <q-badge color="red" text-color="white" floating>
               2
             </q-badge>
-            <q-tooltip>Notificaciones</q-tooltip>
-          </q-btn>
-          <q-btn round flat>
-            <q-avatar size="35px">
-              <img src="https://icon-library.com/images/obi-wan-kenobi-icon/obi-wan-kenobi-icon-22.jpg">
-            </q-avatar>
-            <q-tooltip>Cuenta</q-tooltip>
+            <q-tooltip>Logout</q-tooltip>
           </q-btn>
         </div>
       </q-toolbar>
@@ -114,6 +114,7 @@ export default {
     return {
       leftDrawerOpen: false,
       search: '',
+      header: { headers: { 'Content-Type': 'application/json' } },
       storage: 0.26,
       links1: [
         { icon: 'fas fa-money-bill-wave', text: 'Mis Transacciones', to: '/' },
@@ -174,6 +175,18 @@ export default {
         })
         .then(response => {
           console.log(response.data)
+        })
+        .catch(response => {
+          console.log(response)
+        })
+    },
+    logout () {
+      this.$axios
+        .get('http://localhost:8060/paytrack/api/pago/usuario/' + this.userInformation.usuario_id, {
+        })
+        .then(response => {
+          this.$q.localStorage.remove('tkn')
+          this.$router.push('/login')
         })
         .catch(response => {
           console.log(response)
