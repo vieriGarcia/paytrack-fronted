@@ -148,8 +148,8 @@ export default {
     this.getTransacciones()
   },
   methods: {
-    getUsuario () {
-      this.$axios
+    async getUsuario () {
+      await this.$axios
         .get('http://localhost:8000/api/cliente/', {
           headers: {
             Authorization:
@@ -162,6 +162,7 @@ export default {
           this.userInformation.usuario_nombre = response.data.nombres
           this.userInformation.usuario_apellidos = response.data.apellidos
           this.userInformation.usuario_id = response.data.user
+          console.log(this.userInformation.usuario_id)
         })
         .catch(response => {
           console.log(response)

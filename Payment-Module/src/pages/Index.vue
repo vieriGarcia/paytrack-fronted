@@ -21,6 +21,9 @@ export default {
       tableInformation: []
     }
   },
+  mounted () {
+    this.getPayment()
+  },
   methods: {
     getPayment () {
       this.$axios
@@ -32,7 +35,7 @@ export default {
         .catch(response => {
           console.log(response)
         })
-    },
+    }
   }
 }
 
