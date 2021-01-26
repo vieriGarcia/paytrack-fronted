@@ -133,7 +133,51 @@ export default {
         { icon: 'library_books', text: 'Animation' },
         { icon: 'dashboard', text: 'Collage' },
         { icon: 'book', text: 'Photo book' }
-      ]
+      ],
+      userInformation: {
+        usuario_nombre: '',
+        usuario_apellidos: '',
+        usuario_correo: '',
+        usuario_documento: '',
+        usuario_id: 0
+      }
+    }
+  },
+  mounted () {
+    this.getUsuario()
+    this.getTransacciones()
+  },
+  methods: {
+    getUsuario () {
+      this.$axios
+        .get('http://localhost:8000/api/cliente/', {
+          headers: {
+            Authorization:
+              'Bearer ' +
+              this.$q.localStorage.getItem('tkn')
+          }
+        })
+        .then(response => {
+          this.userInformation.usuario_correo = response.data.email
+          this.userInformation.usuario_nombre = response.data.nombres
+          this.userInformation.usuario_apellidos = response.data.apellidos
+          this.userInformation.usuario_id = response.data.user
+          console.log(this.userInformation.usuario_id)
+        })
+        .catch(response => {
+          console.log(response)
+        })
+    },
+    getTransacciones () {
+      this.$axios
+        .get('http://localhost:8060/paytrack/api/pago/usuario/' + this.userInformation.usuario_id, {
+        })
+        .then(response => {
+          console.log(response.data)
+        })
+        .catch(response => {
+          console.log(response)
+        })
     }
   }
 }
