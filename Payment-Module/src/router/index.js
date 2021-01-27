@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
-import LocalStorage from 'quasar'
 Vue.use(VueRouter)
 
 /*
@@ -25,6 +24,7 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
+  /** console.log(LocalStorage.getItem('tkn'))
   Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
       if (LocalStorage.getItem('tkn') == null) {
@@ -37,6 +37,6 @@ export default function (/* { store, ssrContext } */) {
     } else {
       next()
     }
-  })
+  })**/
   return Router
 }

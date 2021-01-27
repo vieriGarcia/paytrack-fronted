@@ -1,8 +1,9 @@
 <template>
   <q-page>
-    <q-card unlevated>
+    <q-card style="width: 80%; margin-left:10%; margin-top:5%" unlevated>
       <q-card-section>
         <div class="text-bold text-primary">Mis transacciones</div>
+         <div class="q-pt-md">
         <q-table :data="tableInformation" :columns="columns">
           <template v-slot:body="props">
             <q-tr :props="props">
@@ -19,6 +20,7 @@
               </q-tr>
       </template>
         </q-table>
+      </div>
       </q-card-section>
     </q-card>
   </q-page>
@@ -35,16 +37,17 @@ export default {
     return {
       tableInformation: [],
       columns: [
-        { name: 'idOrden', label: 'Numero Order', field: 'idOrden', sortable: true },
+        { name: 'idOrden', label: 'Numero Order', field: 'idOrden', sortable: true, align: 'left' },
         { name: 'descripcionOrder', label: 'Descripcion', field: 'descripcionOrder', sortable: true },
         { name: 'proveedor', label: 'Proveedor', field: 'proveedor' },
         { name: 'fechaOperacion', label: 'Fecha', field: 'fechaOperacion' },
         { name: 'estado', label: 'Estado', field: 'estado' },
-        { name: 'monto', label: 'monto', field: 'Monto', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10) }
+        { name: 'monto', label: 'monto', field: 'Monto', sortable: true, sort: (a, b) => parseInt(a, 10) - parseInt(b, 10), align: 'center' }
       ]
     }
   },
   mounted () {
+    if (this.$q.localStorage.getItem('tkn') === null) this.$router.push('/login')
     this.getPayment()
   },
   methods: {

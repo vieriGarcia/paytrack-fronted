@@ -86,7 +86,7 @@ export default {
     }
   },
   created () {
-    if (this.$q.localStorage.getItem('tkn') !== null) this.$router.push('/').catch(err => { console.log('Navigation problem: now in Dashboard' + err) })
+    if (this.$q.localStorage.getItem('tkn') !== null) this.$router.push('/')
   },
   methods: {
     ...mapActions(['fetchAuth']),
