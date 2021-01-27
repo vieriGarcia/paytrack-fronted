@@ -25,12 +25,12 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
-  router.beforeEach((to, from, next) => {
+  Router.beforeEach((to, from, next) => {
     if (to.matched.some((record) => record.meta.requiresAuth)) {
-      if (LocalStorage.getItem("tkn") == null) {
+      if (LocalStorage.getItem('tkn') == null) {
         next({
-          path: "/login",
-          params: { nextUrl: to.fullPath },
+          path: '/login',
+          params: { nextUrl: to.fullPath }
         })
       }
       next()

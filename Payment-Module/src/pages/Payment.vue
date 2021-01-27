@@ -308,7 +308,7 @@ export default {
           xhr.open( 'POST', 'http://localhost:8060/paytrack/api/pago', true );
           xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
           xhr.onreadystatechange = function ( response ) {
-            alert(response)
+            alert("Su pago fue registrado satisfactoriamente")
             window.location.href = ""
           };
           xhr.send( fd );

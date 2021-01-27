@@ -6,7 +6,6 @@
         <q-table :data="tableInformation" :columns="columns">
           <template v-slot:body="props">
             <q-tr :props="props">
-              
               <q-td
                 v-for="col in props.cols"
                 :key="col.name"
@@ -62,7 +61,7 @@ export default {
     },
     retryPayment (row) {
       console.log(row)
-      this.$router.push('/payment/' + row.idOrden + '/' + this.$q.localStorage.getItem('tkn') )
+      this.$router.push('/payment/' + row.idOrden + '/' + this.$q.localStorage.getItem('tkn'))
     }
   }
 }
